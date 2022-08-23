@@ -1,12 +1,15 @@
 import React from "react";
-// import getInitialData from "../utils";
+import ListActive from "./ListActive";
+import ListArchive from "./ListArchive";
 
-export default function NotesList() {
+export default function NotesList({ notes }) {
   return (
     <>
-      {/* {getInitialData.map((note) => {
-        note.title;
-      })} */}
+      <h2>Catatan Aktif</h2>
+      <div className="notes-list">
+        <ListActive notes={notes} />
+      </div>
+      <ListArchive />
     </>
   );
 }

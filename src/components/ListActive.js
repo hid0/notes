@@ -11,7 +11,7 @@ const ListActive = ({ notes }) => {
         <div className="note-item">
           <div className="note-item__content">
             <NoteTitle title={note.title} key={note.id} />
-            <NoteDate date={note.date} />
+            <NoteDate date={note.createdAt} />
             <NoteBody body={note.body} />
           </div>
           <div className="note-item__action">

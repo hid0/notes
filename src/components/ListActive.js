@@ -8,9 +8,9 @@ const ListActive = ({ notes }) => {
   return (
     <>
       {notes.map((note) => (
-        <div className="note-item">
+        <div className="note-item" key={note.id}>
           <div className="note-item__content">
-            <NoteTitle title={note.title} key={note.id} />
+            <NoteTitle title={note.title} />
             <NoteDate date={note.createdAt} />
             <NoteBody body={note.body} />
           </div>

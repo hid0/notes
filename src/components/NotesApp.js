@@ -10,6 +10,18 @@ class NotesApp extends React.Component {
     this.state = {
       notes: getInitialData(),
     };
+    this.onAddNoteHandler = this.onAddNoteHandler.bind(this);
+    this.onDeleteHandler = this.onDeleteHandler.bind(this);
+  }
+
+  onArchiveHandler(id) {
+    const notes = this.state.notes.filter((note) => note.id !== id);
+    this.setState({ notes });
+  }
+
+  onDeleteHandler(id) {
+    const notes = this.state.notes.filter((note) => note.id !== id);
+    this.setState({ notes });
   }
 
   onAddNoteHandler({ title, body }) {
@@ -21,13 +33,14 @@ class NotesApp extends React.Component {
             id: +new Date(),
             title,
             body,
-            createdAt: new Date.now(),
+            createdAt: new Date().getDate,
             archived: false,
           },
         ],
       };
     });
   }
+
   render() {
     return (
       <>

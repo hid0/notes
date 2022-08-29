@@ -1,21 +1,48 @@
 import Nav from "./Nav";
 import React from "react";
-import NotesList from "./NotesList";
 import CreateNote from "./CreateNote";
 import { getInitialData } from "../utils";
+import ActiveNote from "./ActiveNote";
+import ArchiveNote from "./ArchiveNote";
 
 class NotesApp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       notes: getInitialData(),
+      searchQuery: "",
     };
     this.onAddNoteHandler = this.onAddNoteHandler.bind(this);
     this.onDeleteHandler = this.onDeleteHandler.bind(this);
+    this.onArchiveHandler = this.onArchiveHandler.bind(this);
+    this.onSearchHandler = this.onSearchHandler.bind(this);
+    this.onActiveHandler = this.onActiveHandler.bind(this);
+  }
+
+  onActiveHandler(id) {
+    const notes = this.state.notes.map((note) => {
+      if (note.id === id) {
+        note.archived = false;
+      }
+      return note;
+    });
+    this.setState({ notes });
+  }
+
+  onSearchHandler(title) {
+    const notes = this.state.notes.filter((note) => {
+      note.title.toLowerCase().includes(title.toLowerCase());
+    });
+    this.setState({ notes });
   }
 
   onArchiveHandler(id) {
-    const notes = this.state.notes.filter((note) => note.id !== id);
+    const notes = this.state.notes.map((note) => {
+      if (note.id === id) {
+        note.archived = true;
+      }
+      return note;
+    });
     this.setState({ notes });
   }
 
@@ -33,7 +60,7 @@ class NotesApp extends React.Component {
             id: +new Date(),
             title,
             body,
-            createdAt: new Date().getDate,
+            createdAt: new Date().toISOString(),
             archived: false,
           },
         ],
@@ -47,7 +74,18 @@ class NotesApp extends React.Component {
         <Nav />
         <div className="note-app__body">
           <CreateNote addNote={this.onAddNoteHandler} />
-          <NotesList notes={this.state.notes} />
+          {/* Note Active List */}
+          <ActiveNote
+            notes={this.state.notes.filter((note) => note.archived === false)}
+            onDelete={this.onDeleteHandler}
+            onArchive={this.onArchiveHandler}
+          />
+          {/* Note Archive List */}
+          <ArchiveNote
+            notes={this.state.notes.filter((note) => note.archived === true)}
+            onDelete={this.onDeleteHandler}
+            onArchive={this.onArchiveHandler}
+          />
         </div>
       </>
     );

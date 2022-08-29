@@ -29,11 +29,12 @@ class NotesApp extends React.Component {
     this.setState({ notes });
   }
 
-  onSearchHandler(title) {
-    const notes = this.state.notes.filter((note) => {
-      note.title.toLowerCase().includes(title.toLowerCase());
+  onSearchHandler(e) {
+    this.setState(() => {
+      return {
+        search: e.target.value,
+      };
     });
-    this.setState({ notes });
   }
 
   onArchiveHandler(id) {
@@ -71,7 +72,7 @@ class NotesApp extends React.Component {
   render() {
     return (
       <>
-        <Nav />
+        <Nav search={this.state.search} onSearch={this.onSearchHandler} />
         <div className="note-app__body">
           <CreateNote addNote={this.onAddNoteHandler} />
           {/* Note Active List */}

@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function SearchNote() {
+export default function SearchNote({ search, onSearch }) {
   return (
     <>
       {/* search input */}
@@ -8,8 +8,8 @@ export default function SearchNote() {
         <input
           type="text"
           placeholder="Cari catatan ..."
-          value=""
-          onChange={() => console.log("opo")}
+          value={search}
+          onChange={(e) => onSearch(e)}
         />
       </div>
     </>

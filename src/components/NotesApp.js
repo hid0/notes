@@ -11,11 +11,13 @@ class NotesApp extends React.Component {
     this.state = {
       notes: getInitialData(),
       searchQuery: "",
+      searchNotes: [],
     };
     this.onAddNoteHandler = this.onAddNoteHandler.bind(this);
     this.onDeleteHandler = this.onDeleteHandler.bind(this);
     this.onArchiveHandler = this.onArchiveHandler.bind(this);
-    this.onSearchHandler = this.onSearchHandler.bind(this);
+    this.onSearchChangeHandler = this.onSearchChangeHandler.bind(this);
+    this.onSearchEventHandler = this.onSearchEventHandler.bind(this);
     this.onActiveHandler = this.onActiveHandler.bind(this);
   }
 
@@ -29,12 +31,35 @@ class NotesApp extends React.Component {
     this.setState({ notes });
   }
 
-  onSearchHandler(e) {
-    this.setState(() => {
+  onSearchChangeHandler(e) {
+    // const search = this.state.notes.filter(
+    //   (note) => note.title.search(e.target.value) !== 1
+    // );
+    // this.setState({
+    //   searchQuery: e.target.value,
+    //   search,
+    // });
+    // console.log(search);
+    this.setState((prevState) => {
       return {
-        search: e.target.value,
+        ...prevState,
+        searchQuery: e.target.value,
       };
     });
+    this.onSearchEventHandler(e.target.value);
+  }
+
+  onSearchEventHandler(val) {
+    let searchedNotes = this.state.notes.filter((note) =>
+      note.title.toLowerCase().includes(val.toLowerCase())
+    );
+    if (this.state.searchQuery.length >= 0) {
+      this.setState({ searchedNotes: null });
+      this.setState({ searchedNotes: searchedNotes });
+    } else {
+      this.setState({ searchedNotes: null });
+      this.setState({ searchedNotes: this.state.notes });
+    }
   }
 
   onArchiveHandler(id) {
@@ -72,7 +97,10 @@ class NotesApp extends React.Component {
   render() {
     return (
       <>
-        <Nav search={this.state.search} onSearch={this.onSearchHandler} />
+        <Nav
+          search={this.state.searchQuery}
+          onSearch={this.onSearchEventHandler}
+        />
         <div className="note-app__body">
           <CreateNote addNote={this.onAddNoteHandler} />
           {/* Note Active List */}

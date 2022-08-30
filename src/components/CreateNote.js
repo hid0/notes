@@ -7,6 +7,7 @@ class CreateNote extends React.Component {
     this.state = {
       title: "",
       body: "",
+      limiter: 50,
     };
 
     this.onTitleChangeEventHandler = this.onTitleChangeEventHandler.bind(this);
@@ -15,9 +16,11 @@ class CreateNote extends React.Component {
   }
 
   onTitleChangeEventHandler(e) {
+    const limit = 50;
     this.setState(() => {
       return {
-        title: e.target.value,
+        title: e.target.value.slice(0, limit),
+        limiter: Math.max(0, limit - e.target.value.length),
       };
     });
   }
@@ -41,7 +44,9 @@ class CreateNote extends React.Component {
         <div className="note-input">
           <h2>Buat catatan</h2>
           <form onSubmit={this.onSubmitHandler}>
-            <p className="note-input__title__char-limit">Sisa karakter: 50</p>
+            <p className="note-input__title__char-limit">
+              Sisa karakter: {this.state.limiter}
+            </p>
             <input
               className="note-input__title"
               type="text"

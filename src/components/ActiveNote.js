@@ -1,21 +1,28 @@
 import CardItem from "./CardItem";
 
-const ActiveNote = ({ notes, onDelete, onArchive }) => {
+const ActiveNote = ({ notes, onDelete, onArchive, query }) => {
   return (
     <>
       <h2>Aktif</h2>
       {notes.length === 0 ? (
-        <p class="notes-list__empty-message">Tidak ada catatan</p>
+        <p className="notes-list__empty-message">Tidak ada catatan</p>
       ) : (
         <div className="notes-list">
-          {notes?.map((note) => (
-            <CardItem
-              key={note.id}
-              onDelete={onDelete}
-              onArchive={onArchive}
-              {...note}
-            />
-          ))}
+          {notes
+            .filter((note) => {
+              if (query) {
+                return note.title.toLoweCase().includes(query.toLoweCase());
+              }
+              return true;
+            })
+            .map((note) => (
+              <CardItem
+                key={note.id}
+                onDelete={onDelete}
+                onArchive={onArchive}
+                {...note}
+              />
+            ))}
         </div>
       )}
     </>
